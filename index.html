@@ -1,259 +1,196 @@
 <!DOCTYPE html>
-<html lang="ht">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>FÒMILÈ EROBLACK FOUNDASYON</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<title>Firebase Wallet Demo</title>
 
 <style>
 body{
-    font-family:Arial,sans-serif;
-    background:#f2f2f2;
-    margin:0;
-    padding:20px;
+font-family: Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
-.container{
-    max-width:900px;
-    margin:auto;
-    background:#fff;
-    padding:25px;
-    border-radius:12px;
-    box-shadow:0 0 15px rgba(0,0,0,.15);
+.box{
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+width:300px;
 }
 
-h1{
-    text-align:center;
-    color:#003366;
-}
-
-h2{
-    margin-top:30px;
-    color:#444;
-    border-bottom:2px solid #ddd;
-    padding-bottom:5px;
-}
-
-label{
-    display:block;
-    margin-top:12px;
-    font-weight:bold;
-}
-
-input, select, textarea{
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-    border:1px solid #ccc;
-    border-radius:6px;
-    box-sizing:border-box;
-}
-
-textarea{
-    min-height:100px;
+input{
+width:100%;
+padding:10px;
+margin:5px 0;
 }
 
 button{
-    margin-top:25px;
-    padding:12px 20px;
-    border:none;
-    border-radius:8px;
-    background:#0066cc;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+width:100%;
+padding:10px;
+margin-top:5px;
+cursor:pointer;
 }
 
-button:hover{
-    background:#004c99;
+.hidden{display:none;}
+
+.balance{
+font-size:22px;
+margin:10px 0;
+color:#22c55e;
 }
 </style>
 </head>
+
 <body>
 
-<div class="container">
+<div class="box">
 
-<h1>FÒMILÈ EROBLACK FONDASYON</h1>
+<h2>Wallet Demo</h2>
 
-<h2>Enfòmasyon Pèsonèl</h2>
+<div id="authBox">
+<input id="email" placeholder="Email">
+<input id="pass" type="password" placeholder="Password">
 
-<label>Non konplè</label>
-<input type="text" id="nom">
+<button onclick="register()">Enskri</button>
+<button onclick="login()">Konekte</button>
+</div>
 
-<label>Dat nesans</label>
-<input type="date" id="dateNaissance">
+<div id="app" class="hidden">
+<p>Byenveni 👋</p>
 
-<label>Kote nesans</label>
-<input type="text" id="lieuNaissance">
+<div class="balance">
+Balans: <span id="balance">0</span> HTG
+</div>
 
-<label>Sèks</label>
-<select id="sexe">
-<option>Gason</option>
-<option>Fi</option>
-</select>
+<input id="amount" type="number" placeholder="Montan">
 
-<label>Nasyonalite</label>
-<input type="text" id="nationalite">
-
-<label>Adrès</label>
-<input type="text" id="adresse">
-
-<label>Telefòn</label>
-<input type="text" id="telephone">
-
-<label>Imèl</label>
-<input type="email" id="email">
-
-<label>Eta sivil</label>
-<select id="etatCivil">
-<option>Selibatè</option>
-<option>Marye</option>
-<option>Divòse</option>
-<option>Vèf/Vèv</option>
-</select>
-
-<label>Non Papa</label>
-<input type="text" id="pere">
-
-<label>Non Manman</label>
-<input type="text" id="mere">
-
-<h2>Edikasyon ak Travay</h2>
-
-<label>Nivo etid</label>
-<input type="text" id="etudes">
-
-<label>Pwofesyon</label>
-<input type="text" id="profession">
-
-<label>Anplwayè</label>
-<input type="text" id="employeur">
-
-<label>Lang ou pale</label>
-<input type="text" id="langues">
-
-<h2>Kesyon Wi / Non</h2>
-
-<label>Eske ou vle patisipe nan aktivite òganizasyon an?</label>
-<select id="q1">
-<option>Wi</option>
-<option>Non</option>
-</select>
-
-<label>Eske ou dispoze respekte règ òganizasyon an?</label>
-<select id="q2">
-<option>Wi</option>
-<option>Non</option>
-</select>
-
-<label>Eske ou dispoze kolabore ak lòt manm yo?</label>
-<select id="q3">
-<option>Wi</option>
-<option>Non</option>
-</select>
-
-<label>Eske ou dispoze patisipe nan reyinyon yo lè sa posib?</label>
-<select id="q4">
-<option>Wi</option>
-<option>Non</option>
-</select>
-
-<label>Eske ou dispoze ede kominote a atravè aktivite òganizasyon an?</label>
-<select id="q5">
-<option>Wi</option>
-<option>Non</option>
-</select>
-
-<label>Eske ou dakò bay enfòmasyon ki egzat nan fòm sa a?</label>
-<select id="q6">
-<option>Wi</option>
-<option>Non</option>
-</select>
-
-<h2>Motivasyon</h2>
-
-<label>Poukisa ou vle rantre nan òganizasyon an?</label>
-<textarea id="motif"></textarea>
-
-<label>Siyati (ekri non ou)</label>
-<input type="text" id="signature">
-
-<button onclick="telechajePDF()">Telechaje PDF voye sou 4066-8847</button>
+<button onclick="addMoney()">Ajoute</button>
+<button onclick="removeMoney()">Retire</button>
+<button onclick="logout()">Dekonekte</button>
+</div>
 
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-function telechajePDF(){
+import {
+getDatabase,
+ref,
+set,
+get,
+update
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-const contenu = `
-<div style="font-family:Arial;padding:20px">
+const firebaseConfig = {
+apiKey: "AIzaSyCiLZ4Aj0WqqHzEPe9L6FsoLO8KN2WJ5qw",
+authDomain: "bensia-e2a4d.firebaseapp.com",
+databaseURL: "https://bensia-e2a4d-default-rtdb.firebaseio.com/",
+projectId: "bensia-e2a4d",
+storageBucket: "bensia-e2a4d.firebasestorage.app",
+messagingSenderId: "697749422261",
+appId: "1:697749422261:web:2fe13d52e7211772c53efc"
+};
 
-<h1 style="text-align:center">FÒMILÈ EROBLACK FONDASYON</h1>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-<h2>Enfòmasyon Pèsonèl</h2>
+let currentUser = null;
 
-<p><b>Non:</b> ${nom.value}</p>
-<p><b>Dat nesans:</b> ${dateNaissance.value}</p>
-<p><b>Kote nesans:</b> ${lieuNaissance.value}</p>
-<p><b>Sèks:</b> ${sexe.value}</p>
-<p><b>Nasyonalite:</b> ${nationalite.value}</p>
-<p><b>Adrès:</b> ${adresse.value}</p>
-<p><b>Telefòn:</b> ${telephone.value}</p>
-<p><b>Imèl:</b> ${email.value}</p>
-<p><b>Eta sivil:</b> ${etatCivil.value}</p>
-<p><b>Papa:</b> ${pere.value}</p>
-<p><b>Manman:</b> ${mere.value}</p>
+// REGISTER
+window.register = async function(){
+let email = document.getElementById("email").value;
+let pass = document.getElementById("pass").value;
 
-<h2>Edikasyon ak Travay</h2>
+const userCred = await createUserWithEmailAndPassword(auth, email, pass);
 
-<p><b>Nivo etid:</b> ${etudes.value}</p>
-<p><b>Pwofesyon:</b> ${profession.value}</p>
-<p><b>Anplwayè:</b> ${employeur.value}</p>
-<p><b>Lang:</b> ${langues.value}</p>
+await set(ref(db, "users/" + userCred.user.uid), {
+email: email,
+balance: 1000
+});
 
-<h2>Kesyon Wi/Non</h2>
-
-<p><b>Patisipe nan aktivite:</b> ${q1.value}</p>
-<p><b>Respekte règ:</b> ${q2.value}</p>
-<p><b>Kolabore ak lòt manm:</b> ${q3.value}</p>
-<p><b>Patisipe nan reyinyon:</b> ${q4.value}</p>
-<p><b>Ede kominote a:</b> ${q5.value}</p>
-<p><b>Enfòmasyon egzat:</b> ${q6.value}</p>
-
-<h2>Motivasyon</h2>
-
-<p>${motif.value}</p>
-
-<br><br>
-
-<p><b>Siyati:</b> ${signature.value}</p>
-
-</div>
-`;
-
-const element = document.createElement("div");
-element.innerHTML = contenu;
-
-html2pdf()
-.set({
-    margin:10,
-    filename:'Enskripsyon_ONG.pdf',
-    image:{type:'jpeg',quality:1},
-    html2canvas:{scale:2},
-    jsPDF:{
-        unit:'mm',
-        format:'a4',
-        orientation:'portrait'
-    }
-})
-.from(element)
-.save();
-
+alert("Kont kreye ✔");
 }
+
+// LOGIN
+window.login = async function(){
+let email = document.getElementById("email").value;
+let pass = document.getElementById("pass").value;
+
+await signInWithEmailAndPassword(auth, email, pass);
+}
+
+// LOGOUT
+window.logout = function(){
+signOut(auth);
+}
+
+// LOAD BALANCE
+async function loadBalance(uid){
+const snap = await get(ref(db, "users/" + uid));
+if(snap.exists()){
+document.getElementById("balance").innerText = snap.val().balance;
+}
+}
+
+// ADD MONEY
+window.addMoney = async function(){
+let amount = Number(document.getElementById("amount").value);
+
+const userRef = ref(db, "users/" + currentUser.uid);
+const snap = await get(userRef);
+
+let newBalance = snap.val().balance + amount;
+
+await update(userRef, {balance: newBalance});
+
+loadBalance(currentUser.uid);
+}
+
+// REMOVE MONEY
+window.removeMoney = async function(){
+let amount = Number(document.getElementById("amount").value);
+
+const userRef = ref(db, "users/" + currentUser.uid);
+const snap = await get(userRef);
+
+let newBalance = snap.val().balance - amount;
+
+if(newBalance < 0){
+alert("Pa gen ase lajan!");
+return;
+}
+
+await update(userRef, {balance: newBalance});
+
+loadBalance(currentUser.uid);
+}
+
+// AUTH STATE
+onAuthStateChanged(auth, (user)=>{
+if(user){
+currentUser = user;
+document.getElementById("authBox").classList.add("hidden");
+document.getElementById("app").classList.remove("hidden");
+loadBalance(user.uid);
+}else{
+currentUser = null;
+document.getElementById("authBox").classList.remove("hidden");
+document.getElementById("app").classList.add("hidden");
+}
+});
 
 </script>
 
